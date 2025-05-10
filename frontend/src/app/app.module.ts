@@ -1,30 +1,29 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatOptionModule } from '@angular/material/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { SettingsComponent } from './settings/settings.component';
+import { HelpDownloadDialogComponent } from './settings/help-download-dialog/help-download-dialog.component';
 
 @NgModule({
   imports: [
     BrowserModule,
-    HttpClientModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatOptionModule,
+    MatSidenavModule,
+    MatIconModule,
     MatButtonModule,
-    AppRoutingModule
+    MatDialogModule,
+    RouterModule,
+    AppComponent,
+    SettingsComponent,
+    HelpDownloadDialogComponent
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: []
 })
-export class AppModule 
-{ }
+export class AppModule { }

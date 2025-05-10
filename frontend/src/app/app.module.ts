@@ -1,29 +1,28 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { SettingsComponent } from './settings/settings.component';
-import { HelpDownloadDialogComponent } from './settings/help-download-dialog/help-download-dialog.component';
+import { HelpIconComponent } from './components/help-icon/help-icon.component';
+import { HelpDialogComponent } from './components/help-dialog/help-dialog.component';
 
 @NgModule({
+  declarations: [
+    AppComponent,
+    HelpIconComponent,
+    HelpDialogComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatSidenavModule,
-    MatIconModule,
     MatButtonModule,
-    MatDialogModule,
-    RouterModule,
-    AppComponent,
-    SettingsComponent,
-    HelpDownloadDialogComponent
+    MatIconModule,
+    MatDialogModule
   ],
-  providers: []
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

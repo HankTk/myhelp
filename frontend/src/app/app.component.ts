@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
+import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { SettingsComponent } from './settings/settings.component';
+import { HelpIconComponent } from './components/help-icon/help-icon.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,8 @@ import { SettingsComponent } from './settings/settings.component';
         <mat-icon>menu</mat-icon>
       </button>
       <span>{{ title }}</span>
+      <span class="spacer"></span>
+      <app-settings></app-settings>
     </mat-toolbar>
 
     <mat-sidenav-container>
@@ -28,7 +32,7 @@ import { SettingsComponent } from './settings/settings.component';
       </mat-sidenav>
       <mat-sidenav-content>
         <div class="content">
-          <app-settings></app-settings>
+          <app-help-icon [helpContent]="getHelpContent()"></app-help-icon>
           <router-outlet></router-outlet>
         </div>
       </mat-sidenav-content>
@@ -53,6 +57,9 @@ import { SettingsComponent } from './settings/settings.component';
       height: 24px;
       line-height: 24px;
     }
+    .spacer {
+      flex: 1 1 auto;
+    }
   `],
   standalone: true,
   imports: [
@@ -64,9 +71,28 @@ import { SettingsComponent } from './settings/settings.component';
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    SettingsComponent
-  ]
+    SettingsComponent,
+    HelpIconComponent
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {
+  @ViewChild('sidenav') sidenav!: MatSidenav;
   title = 'myhelp';
+
+  constructor(private router: Router) {}
+
+  getHelpContent(): string {
+    const currentRoute = this.router.url;
+    switch (currentRoute) {
+      case '/welcome':
+        return 'Welcome to the application! This is the home page.';
+      case '/page1':
+        return 'This is Page 1. Here you can find specific information about this section.';
+      case '/page2':
+        return 'This is Page 2. Here you can find specific information about this section.';
+      default:
+        return 'This is the help content for the current page.';
+    }
+  }
 }

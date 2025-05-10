@@ -1,4 +1,8 @@
-
-<a [href]="zipUrl" download>
-  <button>Download Help ({{ lang.toUpperCase() }})</button>
-</a>
+<div class="download-container">
+  <button (click)="processDownload()" [disabled]="isProcessing">
+    {{ isProcessing ? 'Processing...' : 'Download Help (' + lang.toUpperCase() + ')' }}
+  </button>
+  <div *ngIf="message" class="message" [class.error]="message.includes('Error')">
+    {{ message }}
+  </div>
+</div>

@@ -9,18 +9,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import { AppComponent } from './app.component';
-import { HelpComponent } from './help/help.component';
-import { DownloadButtonComponent } from './download-button/download-button.component';
-import { WelcomeComponent } from './welcome/welcome.component';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HelpComponent,
-    DownloadButtonComponent,
-    WelcomeComponent
-  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -35,4 +26,5 @@ import { AppRoutingModule } from './app-routing.module';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule 
+{ }

@@ -4,7 +4,8 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.util.List;
 
-public interface RepositoryService {
+public interface RepositoryService 
+{
     List<String> listLanguageFiles() throws IOException;
     List<String> listFiles() throws IOException;
     Resource getFile(String fileName) throws IOException;

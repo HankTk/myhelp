@@ -1,21 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSelectChange } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { DownloadButtonComponent } from '../download-button/download-button.component';
 
 @Component({
   selector: 'app-help',
   templateUrl: './help.component.html',
-  styleUrls: ['./help.component.css']
+  styleUrls: ['./help.component.css'],
+  standalone: true,
+  imports: [CommonModule, MatFormFieldModule, MatSelectModule, DownloadButtonComponent]
 })
 export class HelpComponent implements OnInit {
+
+  private http = inject(HttpClient);
+
   languages: string[] = [];
   selectedLanguage: string = '';
   helpContent: string = '';
   currentPage: string = '';
-
-  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.loadLanguages();
@@ -49,4 +54,5 @@ export class HelpComponent implements OnInit {
     this.currentPage = pageId;
     this.loadHelpContent();
   }
+
 } 

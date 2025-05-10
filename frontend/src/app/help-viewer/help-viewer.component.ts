@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 
 @Component({
@@ -6,11 +5,15 @@ import { Component, Input } from '@angular/core';
   templateUrl: './help-viewer.component.html',
   styleUrls: ['./help-viewer.component.css']
 })
-export class HelpViewerComponent {
+export class HelpViewerComponent 
+{
+
   @Input() page: string = 'dashboard';
   @Input() lang: string = 'ja';
 
-  get helpUrl() {
+  get helpUrl() 
+  {
     return `/help/${this.lang}/${this.page}.html`;
   }
+
 }

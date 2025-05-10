@@ -12,65 +12,85 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/repository")
-public class RepositoryController {
-
+public class RepositoryController 
+{
     private final RepositoryService repositoryService;
 
     @Autowired
-    public RepositoryController(RepositoryService repositoryService) {
+    public RepositoryController(RepositoryService repositoryService) 
+    {
         this.repositoryService = repositoryService;
     }
 
     @GetMapping("/languages")
-    public ResponseEntity<List<String>> listLanguageFiles() {
-        try {
+    public ResponseEntity<List<String>> listLanguageFiles() 
+    {
+        try 
+        {
             List<String> languages = repositoryService.listLanguageFiles();
             return ResponseEntity.ok(languages);
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) 
+        {
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/download-language/{language}")
-    public ResponseEntity<String> downloadLanguageFile(@PathVariable String language) {
-        try {
+    public ResponseEntity<String> downloadLanguageFile(@PathVariable String language) 
+    {
+        try 
+        {
             String fileName = "help-" + language + ".zip";
             
             // Copy and extract the file
             repositoryService.copyAndExtractFile(fileName);
             
             return ResponseEntity.ok("File processed successfully");
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) 
+        {
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/files")
-    public ResponseEntity<List<String>> listFiles() {
-        try {
+    public ResponseEntity<List<String>> listFiles() 
+    {
+        try 
+        {
             List<String> files = repositoryService.listFiles();
             return ResponseEntity.ok(files);
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) 
+        {
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
-        try {
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) 
+    {
+        try 
+        {
             // Copy and extract the file if it's a help zip
             repositoryService.copyAndExtractFile(fileName);
             
             // Get the file for download
             Resource resource = repositoryService.getFile(fileName);
-            if (resource != null && resource.exists()) {
+            if (resource != null && resource.exists()) 
+            {
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                         .body(resource);
-            } else {
+            } 
+            else 
+            {
                 return ResponseEntity.notFound().build();
             }
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) 
+        {
             return ResponseEntity.internalServerError().build();
         }
     }

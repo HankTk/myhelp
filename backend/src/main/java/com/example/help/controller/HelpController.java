@@ -12,19 +12,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/help")
-public class HelpController {
-
+public class HelpController 
+{
     private final HelpService helpService;
 
     @Autowired
-    public HelpController(HelpService helpService) {
+    public HelpController(HelpService helpService) 
+    {
         this.helpService = helpService;
     }
 
     @PostMapping("/upload/{language}")
     public ResponseEntity<String> uploadHelpFile(
             @PathVariable String language,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file) 
+    {
         String fileName = helpService.storeHelpFile(file, language);
         return ResponseEntity.ok(fileName);
     }
@@ -32,7 +34,8 @@ public class HelpController {
     @GetMapping("/download/{language}/{fileName:.+}")
     public ResponseEntity<Resource> downloadHelpFile(
             @PathVariable String language,
-            @PathVariable String fileName) {
+            @PathVariable String fileName) 
+    {
         Resource resource = helpService.loadHelpFileAsResource(language, fileName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
@@ -40,12 +43,14 @@ public class HelpController {
     }
 
     @GetMapping("/languages")
-    public ResponseEntity<List<String>> getAvailableLanguages() {
+    public ResponseEntity<List<String>> getAvailableLanguages() 
+    {
         return ResponseEntity.ok(helpService.getAvailableLanguages());
     }
 
     @GetMapping("/download-language/{language}")
-    public ResponseEntity<Resource> downloadLanguageHelp(@PathVariable String language) {
+    public ResponseEntity<Resource> downloadLanguageHelp(@PathVariable String language) 
+    {
         Resource resource = helpService.prepareLanguageHelpZip(language);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"help-" + language + ".zip\"")
@@ -53,7 +58,8 @@ public class HelpController {
     }
 
     @GetMapping("/welcome")
-    public ResponseEntity<String> getWelcomeContent(@RequestParam(defaultValue = "en") String language) {
+    public ResponseEntity<String> getWelcomeContent(@RequestParam(defaultValue = "en") String language) 
+    {
         String content = helpService.getWelcomeContent(language);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8")

@@ -12,10 +12,11 @@ import java.util.zip.ZipInputStream;
 
 @RestController
 @RequestMapping("/api/help")
-public class HelpUploadController {
-
+public class HelpUploadController 
+{
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) throws IOException 
+    {
         String lang = file.getOriginalFilename().contains("ja") ? "ja" : "en";
         // Get the backend directory path and go up one level to find help-files
         Path backendPath = Paths.get("").toAbsolutePath();
@@ -32,13 +33,18 @@ public class HelpUploadController {
         Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
 
         // Extract the zip file to the language directory
-        try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(targetFile))) {
+        try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(targetFile))) 
+        {
             ZipEntry entry;
-            while ((entry = zipInputStream.getNextEntry()) != null) {
+            while ((entry = zipInputStream.getNextEntry()) != null) 
+            {
                 Path entryPath = languageDir.resolve(entry.getName());
-                if (entry.isDirectory()) {
+                if (entry.isDirectory()) 
+                {
                     Files.createDirectories(entryPath);
-                } else {
+                } 
+                else 
+                {
                     Files.createDirectories(entryPath.getParent());
                     Files.copy(zipInputStream, entryPath, StandardCopyOption.REPLACE_EXISTING);
                 }

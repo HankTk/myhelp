@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WelcomeComponent } from './welcome/welcome.component';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { HelpComponent } from './help/help.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'help', component: HelpComponent },
   { path: '**', redirectTo: '' }

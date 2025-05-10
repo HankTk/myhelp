@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HelpService {
+export class HelpService 
+{
+  private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/help';  // Updated to use full backend URL
 
-  constructor(private http: HttpClient) { }
-
-  getWelcomeContent(): Observable<string> {
+  getWelcomeContent(): Observable<string> 
+  {
     return this.http.get(`${this.baseUrl}/welcome`, { responseType: 'text' });
   }
 } 

@@ -9,19 +9,24 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-public class HelpApplication {
+public class HelpApplication 
+{
     private static final Logger logger = LoggerFactory.getLogger(HelpApplication.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         SpringApplication.run(HelpApplication.class, args);
         logger.info("Application started successfully");
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
+    public WebMvcConfigurer corsConfigurer() 
+    {
+        return new WebMvcConfigurer() 
+        {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(CorsRegistry registry) 
+            {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:4200")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

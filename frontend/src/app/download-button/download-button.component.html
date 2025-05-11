@@ -2,7 +2,4 @@
   <button (click)="processDownload()" [disabled]="isProcessing">
     {{ isProcessing ? 'Processing...' : 'Download Help (' + lang.toUpperCase() + ')' }}
   </button>
-  <div *ngIf="message" class="message" [class.error]="message.includes('Error')">
-    {{ message }}
-  </div>
 </div>

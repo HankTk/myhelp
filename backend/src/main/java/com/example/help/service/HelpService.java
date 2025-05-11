@@ -1,6 +1,6 @@
 package com.example.help.service;
 
-import com.example.help.model.HelpContent;
+import com.example.help.exception.HelpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,42 +20,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class HelpService 
-{
+public class HelpService {
     private static final Logger logger = LoggerFactory.getLogger(HelpService.class);
     private final Path helpStorageLocation;
 
-    public HelpService() 
-    {
-        // Get the current working directory (backend) and go up one level to find help-files
+    public HelpService() {
         Path currentPath = Paths.get("").toAbsolutePath();
         Path helpFilesPath = currentPath.getParent().resolve("help-files").normalize();
         this.helpStorageLocation = helpFilesPath;
-        try 
-        {
+        initializeStorage();
+    }
+
+    private void initializeStorage() {
+        try {
             Files.createDirectories(this.helpStorageLocation);
             Files.createDirectories(this.helpStorageLocation.resolve("download"));
             logger.info("Help storage location initialized at: {}", this.helpStorageLocation);
-        } 
-        catch (IOException ex) 
-        {
+        } catch (IOException ex) {
             logger.error("Failed to create help storage directory", ex);
-            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
+            throw new HelpException("Could not create the directory where the uploaded files will be stored.", ex);
         }
     }
 
-    public String storeHelpFile(MultipartFile file, String language) 
-    {
+    public String storeHelpFile(MultipartFile file, String language) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        try 
-        {
-            if (fileName.contains("..")) 
-            {
-                logger.error("Invalid file path sequence detected: {}", fileName);
-                throw new RuntimeException("Invalid file path sequence " + fileName);
-            }
-
-            // Store downloaded file in the download folder
+        try {
+            validateFileName(fileName);
             Path downloadDir = this.helpStorageLocation.resolve("download");
             Files.createDirectories(downloadDir);
             
@@ -64,42 +54,38 @@ public class HelpService
             logger.info("Successfully stored downloaded file {} in download directory", fileName);
 
             return fileName;
-        } 
-        catch (IOException ex) 
-        {
+        } catch (IOException ex) {
             logger.error("Failed to store file {}", fileName, ex);
-            throw new RuntimeException("Could not store file " + fileName, ex);
+            throw new HelpException("Could not store file " + fileName, ex);
         }
     }
 
-    public Resource loadHelpFileAsResource(String language, String fileName) 
-    {
-        try 
-        {
+    private void validateFileName(String fileName) {
+        if (fileName.contains("..")) {
+            logger.error("Invalid file path sequence detected: {}", fileName);
+            throw new HelpException("Invalid file path sequence " + fileName);
+        }
+    }
+
+    public Resource loadHelpFileAsResource(String language, String fileName) {
+        try {
             Path filePath = this.helpStorageLocation.resolve(language + "/" + fileName);
             Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) 
-            {
+            if (resource.exists()) {
                 logger.info("Successfully loaded file {} for language {}", fileName, language);
                 return resource;
-            } 
-            else 
-            {
+            } else {
                 logger.error("File not found: {} for language {}", fileName, language);
-                throw new RuntimeException("File not found " + fileName);
+                throw new HelpException("File not found " + fileName);
             }
-        } 
-        catch (MalformedURLException ex) 
-        {
+        } catch (MalformedURLException ex) {
             logger.error("Failed to load file {} for language {}", fileName, language, ex);
-            throw new RuntimeException("File not found " + fileName, ex);
+            throw new HelpException("File not found " + fileName, ex);
         }
     }
 
-    public List<String> getAvailableLanguages() 
-    {
-        try 
-        {
+    public List<String> getAvailableLanguages() {
+        try {
             List<String> languages = Files.list(this.helpStorageLocation)
                     .filter(Files::isDirectory)
                     .filter(path -> !path.getFileName().toString().equals("download"))
@@ -108,102 +94,84 @@ public class HelpService
                     .collect(Collectors.toList());
             logger.info("Found available languages: {}", languages);
             return languages;
-        } 
-        catch (IOException e) 
-        {
+        } catch (IOException e) {
             logger.error("Failed to list available languages", e);
             return new ArrayList<>();
         }
     }
 
-    public Resource prepareLanguageHelpZip(String language) 
-    {
-        try 
-        {
+    public Resource prepareLanguageHelpZip(String language) {
+        try {
             Path languageDir = this.helpStorageLocation.resolve(language);
-            if (!Files.exists(languageDir)) 
-            {
+            if (!Files.exists(languageDir)) {
                 logger.error("Language directory not found: {}", language);
-                throw new RuntimeException("Language directory not found: " + language);
+                throw new HelpException("Language directory not found: " + language);
             }
 
-            // Store zip file in the download folder
             Path zipFile = this.helpStorageLocation.resolve("download/help-" + language + ".zip");
-            try (var zipOutputStream = new java.util.zip.ZipOutputStream(Files.newOutputStream(zipFile))) 
-            {
-                Files.walk(languageDir)
-                    .filter(path -> !Files.isDirectory(path))
-                    .forEach(path -> 
-                    {
-                        try 
-                        {
-                            String entryName = languageDir.relativize(path).toString();
-                            zipOutputStream.putNextEntry(new java.util.zip.ZipEntry(entryName));
-                            Files.copy(path, zipOutputStream);
-                            zipOutputStream.closeEntry();
-                        } 
-                        catch (IOException e) 
-                        {
-                            logger.error("Failed to add file {} to zip", path, e);
-                            throw new RuntimeException("Error creating zip file", e);
-                        }
-                    });
-            }
+            createZipFile(languageDir, zipFile);
+            
             logger.info("Successfully created zip file for language: {}", language);
             return new UrlResource(zipFile.toUri());
-        } 
-        catch (IOException ex) 
-        {
+        } catch (IOException ex) {
             logger.error("Failed to prepare language help zip for {}", language, ex);
-            throw new RuntimeException("Could not prepare language help zip", ex);
+            throw new HelpException("Could not prepare language help zip", ex);
         }
     }
 
-    public String getWelcomeContent(String language) 
-    {
-        try 
-        {
+    private void createZipFile(Path sourceDir, Path zipFile) throws IOException {
+        try (var zipOutputStream = new java.util.zip.ZipOutputStream(Files.newOutputStream(zipFile))) {
+            Files.walk(sourceDir)
+                .filter(path -> !Files.isDirectory(path))
+                .forEach(path -> {
+                    try {
+                        String entryName = sourceDir.relativize(path).toString();
+                        zipOutputStream.putNextEntry(new java.util.zip.ZipEntry(entryName));
+                        Files.copy(path, zipOutputStream);
+                        zipOutputStream.closeEntry();
+                    } catch (IOException e) {
+                        logger.error("Failed to add file {} to zip", path, e);
+                        throw new HelpException("Error creating zip file", e);
+                    }
+                });
+        }
+    }
+
+    public String getWelcomeContent(String language) {
+        try {
             Path welcomeFile = this.helpStorageLocation.resolve(language + "/index.html");
             logger.info("Attempting to read welcome file from: {}", welcomeFile.toAbsolutePath());
             
-            if (!Files.exists(welcomeFile)) 
-            {
+            if (!Files.exists(welcomeFile)) {
                 logger.error("Welcome file not found for language: {} at path: {}", language, welcomeFile.toAbsolutePath());
-                throw new RuntimeException("Welcome file not found for language: " + language);
+                throw new HelpException("Welcome file not found for language: " + language);
             }
             
             String content = Files.readString(welcomeFile);
-            logger.info("Successfully loaded welcome content for language: {} from file: {}", language, welcomeFile.toAbsolutePath());
+            logger.info("Successfully loaded welcome content for language: {}", language);
             return content;
-        } 
-        catch (IOException ex) 
-        {
-            logger.error("Failed to read welcome content for language: {} from path: {}", language, this.helpStorageLocation.resolve(language + "/index.html").toAbsolutePath(), ex);
-            throw new RuntimeException("Could not read welcome content", ex);
+        } catch (IOException ex) {
+            logger.error("Failed to read welcome content for language: {}", language, ex);
+            throw new HelpException("Could not read welcome content", ex);
         }
     }
 
-    public String getHelpContent(String language, String fileName) 
-    {
-        try 
-        {
+    public String getHelpContent(String language, String fileName) {
+        try {
             Path helpFile = this.helpStorageLocation.resolve(language + "/" + fileName);
             logger.info("Attempting to read help file from: {}", helpFile.toAbsolutePath());
             
-            if (!Files.exists(helpFile)) 
-            {
+            if (!Files.exists(helpFile)) {
                 logger.error("Help file not found for language: {} at path: {}", language, helpFile.toAbsolutePath());
-                throw new RuntimeException("Help file not found for language: " + language);
+                throw new HelpException("Help file not found for language: " + language);
             }
             
             String content = Files.readString(helpFile);
-            logger.info("Successfully loaded help content for language: {} from file: {}", language, helpFile.toAbsolutePath());
+            logger.info("Successfully loaded help content for language: {}", language);
             return content;
-        } 
-        catch (IOException ex) 
-        {
-            logger.error("Failed to read help content for language: {} from path: {}", language, this.helpStorageLocation.resolve(language + "/" + fileName).toAbsolutePath(), ex);
-            throw new RuntimeException("Could not read help content", ex);
+        } catch (IOException ex) {
+            logger.error("Failed to read help content for language: {}", language, ex);
+            throw new HelpException("Could not read help content", ex);
         }
     }
 } 

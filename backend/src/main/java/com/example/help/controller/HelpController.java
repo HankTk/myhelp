@@ -48,12 +48,8 @@ public class HelpController
             @PathVariable String language,
             @PathVariable String fileName) 
     {
-        try {
-            String content = helpService.getHelpContent(language, fileName);
-            return ResponseEntity.ok(content);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        String content = helpService.getHelpContent(language, fileName);
+        return ResponseEntity.ok(content);
     }
 
     @GetMapping("/languages")

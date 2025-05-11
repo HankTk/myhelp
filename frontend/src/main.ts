@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -21,7 +22,8 @@ bootstrapApplication(AppComponent, {
       MatIconModule,
       MatButtonModule,
       MatToolbarModule,
-      MatListModule
+      MatListModule,
+      MatDialogModule
     )
   ]
 }).catch(err => console.error(err));

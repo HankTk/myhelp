@@ -3,15 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HelpDialogComponent } from '../help-dialog/help-dialog.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { PageContextService } from '../../services/page-context.service';
+import { HelpService } from '../../services/help.service';
 
 @Component({
   selector: 'app-help-icon',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, HttpClientModule],
+  imports: [MatButtonModule, MatIconModule],
   templateUrl: './help-icon.component.html',
   styleUrls: ['./help-icon.component.scss']
 })
@@ -22,7 +20,7 @@ export class HelpIconComponent implements OnInit
   @Input() language: string = 'en';
 
   private dialog = inject(MatDialog);
-  private http = inject(HttpClient);
+  private helpService = inject(HelpService);
   private pageContextService = inject(PageContextService);
 
   ngOnInit()
@@ -50,22 +48,21 @@ export class HelpIconComponent implements OnInit
   {
     const currentPage = this.pageId || this.pageContextService.getCurrentPage();
     
-    // First try to get the specific page help
-    this.http.get(`http://localhost:8080/api/help/content/${this.language}/${currentPage}.html`, { responseType: 'text' })
-      .pipe(
-        catchError(error => {
-          console.error('Error loading specific help content:', error);
-          // If specific page help fails, try to get the welcome content
-          return this.http.get(`http://localhost:8080/api/help/welcome?language=${this.language}`, { responseType: 'text' })
-            .pipe(
-              catchError(welcomeError => {
-                console.error('Error loading welcome content:', welcomeError);
-                return of('Help content not available for this page.');
-              })
-            );
-        })
-      )
-      .subscribe(content => this.openDialogWithContent(content, currentPage));
+    this.helpService.getHelpContent(this.language, `${currentPage}.html`)
+      .subscribe({
+        next: (content) => this.openDialogWithContent(content, currentPage),
+        error: (error) => {
+          console.error('Error loading help content:', error);
+          this.helpService.getWelcomeContent(this.language)
+            .subscribe({
+              next: (content) => this.openDialogWithContent(content, 'welcome'),
+              error: (error) => {
+                console.error('Error loading welcome content:', error);
+                this.openDialogWithContent('Help content not available for this page.', currentPage);
+              }
+            });
+        }
+      });
   }
 
 } 

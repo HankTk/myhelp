@@ -33,13 +33,13 @@ export class HelpIconComponent implements OnInit
   private openDialogWithContent(content: string, currentPage: string): void
   {
     this.dialog.open(HelpDialogComponent, {
-      width: '600px',
+      width: '1200px',
       height: '80vh',
       data: { content, pageId: currentPage },
       panelClass: ['help-dialog', 'help-dialog-backdrop'],
       hasBackdrop: true,
       autoFocus: true,
-      position: { top: '64px' },
+      position: { top: '10vh' },
       disableClose: false
     });
   }

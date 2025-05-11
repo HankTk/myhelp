@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-page2',
   templateUrl: './page2.component.html',
-  styleUrls: ['./page2.component.css'],
+  styleUrls: ['./page2.component.scss'],
   standalone: true,
   imports: [CommonModule, RouterModule, TranslateModule]
 })

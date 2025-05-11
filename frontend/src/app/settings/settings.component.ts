@@ -13,20 +13,22 @@ import { HelpDownloadDialogComponent } from './help-download-dialog/help-downloa
       <mat-icon>settings</mat-icon>
     </button>
 
-    <mat-drawer-container class="drawer-container">
-      <mat-drawer-content>
-        <ng-content></ng-content>
-      </mat-drawer-content>
-      <mat-drawer #drawer mode="over" position="end">
-        <div class="drawer-content">
-          <h2>Settings</h2>
-          <button mat-button (click)="openHelpDownloadDialog()" class="help-settings-button">
-            <mat-icon>help</mat-icon>
-            Help Settings
-          </button>
-        </div>
-      </mat-drawer>
-    </mat-drawer-container>
+    <div class="drawer-wrapper" [class.drawer-open]="drawer?.opened">
+      <mat-drawer-container class="drawer-container">
+        <mat-drawer-content>
+          <ng-content></ng-content>
+        </mat-drawer-content>
+        <mat-drawer #drawer mode="over" position="end">
+          <div class="drawer-content">
+            <h2>Settings</h2>
+            <button mat-button (click)="openHelpDownloadDialog()" class="help-settings-button">
+              <mat-icon>help</mat-icon>
+              Help Settings
+            </button>
+          </div>
+        </mat-drawer>
+      </mat-drawer-container>
+    </div>
   `,
   styles: [`
     .settings-button {
@@ -43,18 +45,21 @@ import { HelpDownloadDialogComponent } from './help-download-dialog/help-downloa
     .settings-button mat-icon {
       color: white;
     }
-    .drawer-container {
+    .drawer-wrapper {
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
-      background: transparent;
-      z-index: 999;
       pointer-events: none;
+      z-index: 999;
     }
-    .drawer-container mat-drawer {
+    .drawer-wrapper.drawer-open {
       pointer-events: auto;
+    }
+    .drawer-container {
+      height: 100%;
+      background: transparent;
     }
     .drawer-content {
       padding: 16px;

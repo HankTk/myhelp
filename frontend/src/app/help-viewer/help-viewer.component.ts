@@ -4,7 +4,7 @@ import { LanguageService } from '../services/language.service';
 @Component({
   selector: 'app-help-viewer',
   templateUrl: './help-viewer.component.html',
-  styleUrls: ['./help-viewer.component.css']
+  styleUrls: ['./help-viewer.component.scss']
 })
 export class HelpViewerComponent implements OnInit {
   @Input() page: string = 'dashboard';

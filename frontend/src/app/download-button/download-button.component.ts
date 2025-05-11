@@ -14,7 +14,7 @@ import { HttpResponse } from '@angular/common/http';
       </button>
     </div>
   `,
-  styleUrls: ['./download-button.component.css'],
+  styleUrls: ['./download-button.component.scss'],
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule]
 })

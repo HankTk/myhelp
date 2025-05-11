@@ -15,7 +15,7 @@ interface HelpDialogData {
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule, TranslateModule],
   templateUrl: './help-dialog.component.html',
-  styleUrls: ['./help-dialog.component.css']
+  styleUrls: ['./help-dialog.component.scss']
 })
 export class HelpDialogComponent
 {

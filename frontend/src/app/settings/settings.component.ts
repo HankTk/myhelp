@@ -20,7 +20,7 @@ import { HelpDownloadDialogComponent } from './help-download-dialog/help-downloa
       <mat-drawer #drawer mode="over" position="end">
         <div class="drawer-content">
           <h2>Settings</h2>
-          <button mat-button (click)="openHelpDownloadDialog()">
+          <button mat-button (click)="openHelpDownloadDialog()" class="help-settings-button">
             <mat-icon>help</mat-icon>
             Help Settings
           </button>
@@ -37,23 +37,50 @@ import { HelpDownloadDialogComponent } from './help-download-dialog/help-downloa
       display: flex;
       align-items: center;
       justify-content: center;
+      background-color: transparent;
+    }
+    .settings-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
     }
     .settings-button mat-icon {
       color: white;
     }
     .drawer-container {
       position: fixed;
-      top: 64px;
+      top: 0;
       bottom: 0;
       left: 0;
       right: 0;
       background: transparent;
+      z-index: 999;
     }
     .drawer-content {
       padding: 16px;
+      min-width: 300px;
+    }
+    .drawer-content h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .help-settings-button {
+      color: white;
+      background-color: #1976d2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .help-settings-button:hover {
+      background-color: #1565c0;
+    }
+    .help-settings-button mat-icon {
+      color: white;
     }
     mat-drawer {
       width: 300px;
+      background-color: white;
     }
   `],
   standalone: true,

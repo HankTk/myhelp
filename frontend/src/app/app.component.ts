@@ -8,14 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { SettingsComponent } from './settings/settings.component';
 import { HelpIconComponent } from './components/help-icon/help-icon.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PageContextService } from './services/page-context.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   template: `
     <mat-toolbar color="primary">
-      <button mat-icon-button (click)="sidenav.toggle()" aria-label="Menu">
+      <button mat-icon-button (click)="toggleSidenav()" aria-label="Menu">
         <mat-icon>menu</mat-icon>
       </button>
       <span>{{ title }}</span>
@@ -23,12 +23,13 @@ import { PageContextService } from './services/page-context.service';
       <app-settings></app-settings>
     </mat-toolbar>
 
-    <mat-sidenav-container>
-      <mat-sidenav #sidenav mode="side" opened>
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav #sidenav mode="side" [opened]="true">
         <mat-nav-list>
           <a mat-list-item routerLink="/welcome" routerLinkActive="active" (click)="onNavigation('welcome')">Welcome</a>
           <a mat-list-item routerLink="/page1" routerLinkActive="active" (click)="onNavigation('page1')">Page 1</a>
           <a mat-list-item routerLink="/page2" routerLinkActive="active" (click)="onNavigation('page2')">Page 2</a>
+          <a mat-list-item routerLink="/help" routerLinkActive="active" (click)="onNavigation('help')">Help</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -40,11 +41,12 @@ import { PageContextService } from './services/page-context.service';
     </mat-sidenav-container>
   `,
   styles: [`
-    mat-sidenav-container {
+    .sidenav-container {
       height: calc(100vh - 64px);
     }
     mat-sidenav {
       width: 250px;
+      background-color: white;
     }
     .content {
       padding: 20px;
@@ -85,6 +87,10 @@ export class AppComponent {
     private router: Router,
     private pageContextService: PageContextService
   ) {}
+
+  toggleSidenav() {
+    this.sidenav.toggle();
+  }
 
   onNavigation(pageId: string) {
     this.pageContextService.setCurrentPage(pageId);

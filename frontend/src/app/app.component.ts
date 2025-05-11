@@ -9,6 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { SettingsComponent } from './settings/settings.component';
 import { HelpIconComponent } from './components/help-icon/help-icon.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { PageContextService } from './services/page-context.service';
 
 @Component({
   selector: 'app-root',
@@ -25,14 +26,14 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     <mat-sidenav-container>
       <mat-sidenav #sidenav mode="side" opened>
         <mat-nav-list>
-          <a mat-list-item routerLink="/welcome" routerLinkActive="active" (click)="sidenav.close()">Welcome</a>
-          <a mat-list-item routerLink="/page1" routerLinkActive="active" (click)="sidenav.close()">Page 1</a>
-          <a mat-list-item routerLink="/page2" routerLinkActive="active" (click)="sidenav.close()">Page 2</a>
+          <a mat-list-item routerLink="/welcome" routerLinkActive="active" (click)="onNavigation('welcome')">Welcome</a>
+          <a mat-list-item routerLink="/page1" routerLinkActive="active" (click)="onNavigation('page1')">Page 1</a>
+          <a mat-list-item routerLink="/page2" routerLinkActive="active" (click)="onNavigation('page2')">Page 2</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
         <div class="content">
-          <app-help-icon [helpContent]="getHelpContent()"></app-help-icon>
+          <app-help-icon></app-help-icon>
           <router-outlet></router-outlet>
         </div>
       </mat-sidenav-content>
@@ -80,19 +81,13 @@ export class AppComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   title = 'myhelp';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private pageContextService: PageContextService
+  ) {}
 
-  getHelpContent(): string {
-    const currentRoute = this.router.url;
-    switch (currentRoute) {
-      case '/welcome':
-        return 'Welcome to the application! This is the home page.';
-      case '/page1':
-        return 'This is Page 1. Here you can find specific information about this section.';
-      case '/page2':
-        return 'This is Page 2. Here you can find specific information about this section.';
-      default:
-        return 'This is the help content for the current page.';
-    }
+  onNavigation(pageId: string) {
+    this.pageContextService.setCurrentPage(pageId);
+    this.sidenav.close();
   }
 }

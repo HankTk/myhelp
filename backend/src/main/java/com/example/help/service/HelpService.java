@@ -182,4 +182,28 @@ public class HelpService
             throw new RuntimeException("Could not read welcome content", ex);
         }
     }
+
+    public String getHelpContent(String language, String fileName) 
+    {
+        try 
+        {
+            Path helpFile = this.helpStorageLocation.resolve(language + "/" + fileName);
+            logger.info("Attempting to read help file from: {}", helpFile.toAbsolutePath());
+            
+            if (!Files.exists(helpFile)) 
+            {
+                logger.error("Help file not found for language: {} at path: {}", language, helpFile.toAbsolutePath());
+                throw new RuntimeException("Help file not found for language: " + language);
+            }
+            
+            String content = Files.readString(helpFile);
+            logger.info("Successfully loaded help content for language: {} from file: {}", language, helpFile.toAbsolutePath());
+            return content;
+        } 
+        catch (IOException ex) 
+        {
+            logger.error("Failed to read help content for language: {} from path: {}", language, this.helpStorageLocation.resolve(language + "/" + fileName).toAbsolutePath(), ex);
+            throw new RuntimeException("Could not read help content", ex);
+        }
+    }
 } 

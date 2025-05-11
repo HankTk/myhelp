@@ -4,6 +4,7 @@ import com.example.help.service.HelpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +41,19 @@ public class HelpController
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
+    }
+
+    @GetMapping(value = "/content/{language}/{fileName:.+}", produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> getHelpContent(
+            @PathVariable String language,
+            @PathVariable String fileName) 
+    {
+        try {
+            String content = helpService.getHelpContent(language, fileName);
+            return ResponseEntity.ok(content);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/languages")

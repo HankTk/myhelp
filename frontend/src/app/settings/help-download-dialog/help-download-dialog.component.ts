@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { DownloadButtonComponent } from '../../download-button/download-button.component';
 import { HelpService } from '../../services/help.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AsyncPipe } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 interface HelpFile {
   language: string;
@@ -27,7 +30,9 @@ interface HelpFile {
     MatIconModule,
     MatDialogModule,
     MatTableModule,
-    DownloadButtonComponent
+    DownloadButtonComponent,
+    TranslatePipe,
+    AsyncPipe
   ]
 })
 export class HelpDownloadDialogComponent implements OnInit
@@ -37,15 +42,16 @@ export class HelpDownloadDialogComponent implements OnInit
   private helpService = inject(HelpService);
   private dialogRef = inject(MatDialogRef<HelpDownloadDialogComponent>);
   private data = inject(MAT_DIALOG_DATA);
+  private languageService = inject(LanguageService);
 
   isDownloading: boolean = false;
   statusMessage: string = '';
   statusType: 'success' | 'error' = 'success';
 
   helpFiles: HelpFile[] = [
-    { language: 'English', name: 'User Guide', version: '1.0', available: false, code: 'en' },
-    { language: 'Japanese', name: 'ユーザーガイド', version: '1.0', available: false, code: 'ja' },
-    { language: 'Spanish', name: 'Guía del Usuario', version: '1.0', available: false, code: 'es' }
+    { language: 'common.english', name: 'help.download.userGuide', version: '1.0', available: false, code: 'en' },
+    { language: 'common.japanese', name: 'help.download.userGuide', version: '1.0', available: false, code: 'ja' },
+    { language: 'Español', name: 'Guía del Usuario', version: '1.0', available: false, code: 'es' }
   ];
 
   displayedColumns: string[] = ['language', 'name', 'version', 'action'];
@@ -67,7 +73,7 @@ export class HelpDownloadDialogComponent implements OnInit
       },
       error: (error) => {
         console.error('Error loading available languages:', error);
-        this.statusMessage = 'Error loading available languages';
+        this.statusMessage = 'help.download.error';
         this.statusType = 'error';
       }
     });

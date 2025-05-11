@@ -5,6 +5,10 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
+    "build:prod:ja": "ng build --configuration production --localize=ja",
+    "build:prod:en": "ng build --configuration production --localize=en",
+    "extract-i18n": "ng extract-i18n --output-path src/locale",
     "test": "ng test"
   },
   "private": true,

@@ -1,27 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-welcome',
-  template: `
-    <div class="page-container">
-      <h1>{{ title }}</h1>
-      <p>Welcome to the application!</p>
-    </div>
-  `,
-  styles: [`
-    .page-container {
-      padding: 20px;
-    }
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-  `],
+  templateUrl: './welcome.component.html',
+  styleUrls: ['./welcome.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, TranslatePipe, AsyncPipe]
 })
-export class WelcomeComponent {
-  title = 'Welcome';
-} 
+export class WelcomeComponent {} 

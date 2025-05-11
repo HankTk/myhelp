@@ -1,0 +1,58 @@
+{
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "japanese": "Japanese",
+    "settings": "Settings",
+    "help": "Help",
+    "download": "Download",
+    "search": "Search",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
+  },
+  "welcome": {
+    "title": "Welcome",
+    "message": "Welcome to the application!"
+  },
+  "page1": {
+    "title": "Page 1",
+    "content": "This is Page 1 content."
+  },
+  "page2": {
+    "title": "Page 2",
+    "content": "This is Page 2 content."
+  },
+  "help": {
+    "title": "Help Documentation",
+    "searchPlaceholder": "Search help topics...",
+    "noResults": "No results found",
+    "loading": "Loading...",
+    "error": "An error occurred while loading the help content",
+    "pages": {
+      "welcome": "Welcome Page",
+      "page1": "Page 1",
+      "page2": "Page 2",
+      "index": "Main Help"
+    },
+    "download": {
+      "title": "Help Files",
+      "language": "Language",
+      "name": "Name",
+      "version": "Version",
+      "action": "Action",
+      "error": "Error loading available languages",
+      "userGuide": "User Guide"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language Settings",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System Default"
+  }
+} 

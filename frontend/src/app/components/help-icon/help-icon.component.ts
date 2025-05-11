@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HelpDialogComponent } from '../help-dialog/help-dialog.component';
 import { PageContextService } from '../../services/page-context.service';
 import { HelpService } from '../../services/help.service';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-help-icon',
@@ -17,11 +18,11 @@ export class HelpIconComponent implements OnInit
 {
 
   @Input() pageId?: string;
-  @Input() language: string = 'en';
 
   private dialog = inject(MatDialog);
   private helpService = inject(HelpService);
   private pageContextService = inject(PageContextService);
+  private languageService = inject(LanguageService);
 
   ngOnInit()
   {
@@ -47,13 +48,14 @@ export class HelpIconComponent implements OnInit
   openHelpDialog(): void
   {
     const currentPage = this.pageId || this.pageContextService.getCurrentPage();
+    const currentLang = this.languageService.getCurrentLanguage();
     
-    this.helpService.getHelpContent(this.language, `${currentPage}.html`)
+    this.helpService.getHelpContent(currentLang, `${currentPage}.html`)
       .subscribe({
         next: (content) => this.openDialogWithContent(content, currentPage),
         error: (error) => {
           console.error('Error loading help content:', error);
-          this.helpService.getWelcomeContent(this.language)
+          this.helpService.getWelcomeContent(currentLang)
             .subscribe({
               next: (content) => this.openDialogWithContent(content, 'welcome'),
               error: (error) => {

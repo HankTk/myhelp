@@ -1,27 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-page2',
-  template: `
-    <div class="page-container">
-      <h1>{{ title }}</h1>
-      <p>This is Page 2 content.</p>
-    </div>
-  `,
-  styles: [`
-    .page-container {
-      padding: 20px;
-    }
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-  `],
+  templateUrl: './page2.component.html',
+  styleUrls: ['./page2.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, TranslatePipe, AsyncPipe]
 })
-export class Page2Component {
-  title = 'Page 2';
-} 
+export class Page2Component {} 

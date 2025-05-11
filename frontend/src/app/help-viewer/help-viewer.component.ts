@@ -1,19 +1,24 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-help-viewer',
   templateUrl: './help-viewer.component.html',
   styleUrls: ['./help-viewer.component.css']
 })
-export class HelpViewerComponent 
-{
-
+export class HelpViewerComponent implements OnInit {
   @Input() page: string = 'dashboard';
-  @Input() lang: string = 'ja';
+  private languageService = inject(LanguageService);
+  currentLang: string = 'en';
 
-  get helpUrl() 
-  {
-    return `/help/${this.lang}/${this.page}.html`;
+  ngOnInit() {
+    this.currentLang = this.languageService.getCurrentLanguage();
+    this.languageService.currentLang$.subscribe(lang => {
+      this.currentLang = lang;
+    });
   }
 
+  get helpUrl() {
+    return `/help/${this.currentLang}/${this.page}.html`;
+  }
 }

@@ -32,6 +32,20 @@ export class HelpIconComponent implements OnInit
     }
   }
 
+  private openDialogWithContent(content: string, currentPage: string): void
+  {
+    this.dialog.open(HelpDialogComponent, {
+      width: '600px',
+      height: '80vh',
+      data: { content, pageId: currentPage },
+      panelClass: ['help-dialog', 'help-dialog-backdrop'],
+      hasBackdrop: true,
+      autoFocus: true,
+      position: { top: '64px' },
+      disableClose: false
+    });
+  }
+
   openHelpDialog(): void
   {
     const currentPage = this.pageId || this.pageContextService.getCurrentPage();
@@ -51,18 +65,7 @@ export class HelpIconComponent implements OnInit
             );
         })
       )
-      .subscribe(content => {
-        this.dialog.open(HelpDialogComponent, {
-          width: '600px',
-          height: '80vh',
-          data: { content, pageId: currentPage },
-          panelClass: ['help-dialog', 'help-dialog-backdrop'],
-          hasBackdrop: true,
-          autoFocus: true,
-          position: { top: '64px' },
-          disableClose: false
-        });
-      });
+      .subscribe(content => this.openDialogWithContent(content, currentPage));
   }
 
 } 

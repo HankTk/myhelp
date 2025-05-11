@@ -13,56 +13,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <mat-toolbar color="primary">
-      <button mat-icon-button (click)="toggleSidenav()" aria-label="Menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>{{ title }}</span>
-      <span class="spacer"></span>
-      <app-settings></app-settings>
-    </mat-toolbar>
-
-    <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #sidenav mode="side" [opened]="true">
-        <mat-nav-list>
-          <a mat-list-item routerLink="/welcome" routerLinkActive="active" (click)="onNavigation('welcome')">Welcome</a>
-          <a mat-list-item routerLink="/page1" routerLinkActive="active" (click)="onNavigation('page1')">Page 1</a>
-          <a mat-list-item routerLink="/page2" routerLinkActive="active" (click)="onNavigation('page2')">Page 2</a>
-        </mat-nav-list>
-      </mat-sidenav>
-      <mat-sidenav-content>
-        <div class="content">
-          <app-help-icon></app-help-icon>
-          <router-outlet></router-outlet>
-        </div>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-  `,
-  styles: [`
-    .sidenav-container {
-      height: calc(100vh - 64px);
-    }
-    mat-sidenav {
-      width: 250px;
-      background-color: white;
-    }
-    .content {
-      padding: 20px;
-    }
-    .active {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-    .mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
-    }
-    .spacer {
-      flex: 1 1 auto;
-    }
-  `],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -78,21 +30,25 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppComponent {
+export class AppComponent 
+{
   @ViewChild('sidenav') sidenav!: MatSidenav;
-  title = 'myhelp';
+  title = 'My Application';
 
   constructor(
     private router: Router,
     private pageContextService: PageContextService
-  ) {}
+  ) 
+  {
+  }
 
-  toggleSidenav() {
+  toggleSidenav() 
+  {
     this.sidenav.toggle();
   }
 
-  onNavigation(pageId: string) {
+  onNavigation(pageId: string) 
+  {
     this.pageContextService.setCurrentPage(pageId);
-    this.sidenav.close();
   }
 }

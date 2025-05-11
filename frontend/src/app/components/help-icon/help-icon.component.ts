@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,43 +12,28 @@ import { PageContextService } from '../../services/page-context.service';
   selector: 'app-help-icon',
   standalone: true,
   imports: [MatButtonModule, MatIconModule, HttpClientModule],
-  template: `
-    <button mat-icon-button (click)="openHelpDialog()" class="help-button">
-      <mat-icon>help_outline</mat-icon>
-    </button>
-  `,
-  styles: [`
-    .help-button {
-      position: fixed;
-      top: 8px;
-      right: 64px;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .help-button mat-icon {
-      color: white;
-    }
-  `]
+  templateUrl: './help-icon.component.html',
+  styleUrls: ['./help-icon.component.scss']
 })
-export class HelpIconComponent implements OnInit {
+export class HelpIconComponent implements OnInit
+{
+
   @Input() pageId?: string;
   @Input() language: string = 'en';
 
-  constructor(
-    private dialog: MatDialog,
-    private http: HttpClient,
-    private pageContextService: PageContextService
-  ) {}
+  private dialog = inject(MatDialog);
+  private http = inject(HttpClient);
+  private pageContextService = inject(PageContextService);
 
-  ngOnInit() {
+  ngOnInit()
+  {
     if (this.pageId) {
       this.pageContextService.setCurrentPage(this.pageId);
     }
   }
 
-  openHelpDialog(): void {
+  openHelpDialog(): void
+  {
     const currentPage = this.pageId || this.pageContextService.getCurrentPage();
     
     // First try to get the specific page help
@@ -79,4 +64,5 @@ export class HelpIconComponent implements OnInit {
         });
       });
   }
+
 } 

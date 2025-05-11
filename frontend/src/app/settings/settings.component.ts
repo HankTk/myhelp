@@ -30,9 +30,7 @@ import { HelpDownloadDialogComponent } from './help-download-dialog/help-downloa
   `,
   styles: [`
     .settings-button {
-      position: fixed;
-      top: 8px;
-      right: 16px;
+      position: relative;
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -53,6 +51,10 @@ import { HelpDownloadDialogComponent } from './help-download-dialog/help-downloa
       right: 0;
       background: transparent;
       z-index: 999;
+      pointer-events: none;
+    }
+    .drawer-container mat-drawer {
+      pointer-events: auto;
     }
     .drawer-content {
       padding: 16px;

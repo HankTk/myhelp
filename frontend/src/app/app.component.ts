@@ -29,7 +29,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
           <a mat-list-item routerLink="/welcome" routerLinkActive="active" (click)="onNavigation('welcome')">Welcome</a>
           <a mat-list-item routerLink="/page1" routerLinkActive="active" (click)="onNavigation('page1')">Page 1</a>
           <a mat-list-item routerLink="/page2" routerLinkActive="active" (click)="onNavigation('page2')">Page 2</a>
-          <a mat-list-item routerLink="/help" routerLinkActive="active" (click)="onNavigation('help')">Help</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>

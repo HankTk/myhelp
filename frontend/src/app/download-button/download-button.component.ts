@@ -12,7 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class DownloadButtonComponent 
 {
-
   private http = inject(HttpClient);
 
   @Input() lang: string = 'ja';
@@ -24,25 +23,54 @@ export class DownloadButtonComponent
     this.isProcessing = true;
     this.message = 'Processing...';
     
-    this.http.get(`http://localhost:8080/api/repository/download-language/${this.lang}`, { responseType: 'text' })
-      .subscribe({
-        next: (response) => 
-        {
-          this.message = 'Download completed successfully!';
+    console.log('Starting download for language:', this.lang);
+    
+    this.http.get(`http://localhost:8080/api/repository/download-language/${this.lang}`, { 
+      responseType: 'blob',
+      observe: 'response'
+    })
+    .subscribe({
+      next: (response) => 
+      {
+        console.log('Received response:', response);
+        const blob = response.body;
+        if (!blob) {
+          console.error('No blob received in response');
+          this.message = 'Error: No file content received';
           this.isProcessing = false;
-          // Clear the message after 3 seconds
-          setTimeout(() => 
-          {
-            this.message = '';
-          }, 3000);
-        },
-        error: (error) => 
-        {
-          this.message = 'Error processing file. Please try again.';
-          this.isProcessing = false;
-          console.error('Error processing file:', error);
+          return;
         }
-      });
-  }
 
+        const filename = `help-${this.lang}.zip`;
+        console.log('Creating download for file:', filename);
+        
+        // Create a download link
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        
+        // Append to body, click, and remove
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Clean up
+        window.URL.revokeObjectURL(link.href);
+        
+        this.message = 'Download completed successfully!';
+        this.isProcessing = false;
+        // Clear the message after 3 seconds
+        setTimeout(() => 
+        {
+          this.message = '';
+        }, 3000);
+      },
+      error: (error) => 
+      {
+        console.error('Download error:', error);
+        this.message = 'Error downloading file. Please try again.';
+        this.isProcessing = false;
+      }
+    });
+  }
 }

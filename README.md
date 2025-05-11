@@ -9,7 +9,7 @@ myhelp/
 ├── backend/           # Spring Boot backend application
 ├── frontend/         # Angular frontend application
 ├── help-files/       # Documentation and help files
-└── repositry/        # Additional resources
+└── repository/       # Additional resources
 ```
 
 ## Prerequisites

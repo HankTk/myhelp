@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HelpIconComponent } from './components/help-icon/help-icon.component';
@@ -20,7 +21,8 @@ import { HelpDialogComponent } from './components/help-dialog/help-dialog.compon
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -37,16 +37,27 @@ public class RepositoryController
     }
 
     @GetMapping("/download-language/{language}")
-    public ResponseEntity<String> downloadLanguageFile(@PathVariable String language) 
+    public ResponseEntity<Resource> downloadLanguageFile(@PathVariable String language) 
     {
         try 
         {
             String fileName = "help-" + language + ".zip";
             
-            // Copy and extract the file
+            // First copy and extract the file
             repositoryService.copyAndExtractFile(fileName);
             
-            return ResponseEntity.ok("File processed successfully");
+            // Then get the file for download
+            Resource resource = repositoryService.getFile(fileName);
+            if (resource != null && resource.exists()) 
+            {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                        .body(resource);
+            } 
+            else 
+            {
+                return ResponseEntity.notFound().build();
+            }
         } 
         catch (IOException ex) 
         {

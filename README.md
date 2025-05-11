@@ -15,9 +15,9 @@ myhelp/
 ## Prerequisites
 
 - Java 17 or higher
-- Node.js 16.x or higher
-- npm 8.x or higher
-- Angular CLI 16.x or higher
+- Node.js 18.x or higher
+- npm 9.x or higher
+- Angular CLI 19.x or higher
 
 ## Backend Setup
 
@@ -74,7 +74,7 @@ cd backend
 ### Frontend
 ```bash
 cd frontend
-ng build --prod
+ng build --configuration production
 ```
 
 ## Contributing

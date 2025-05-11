@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HelpDownloadDialogComponent } from './help-download-dialog/help-download-dialog.component';
 import { LanguageService } from '../services/language.service';
-import { TranslatePipe } from '../pipes/translate.pipe';
-import { AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
@@ -26,25 +25,25 @@ import { AsyncPipe } from '@angular/common';
         </mat-drawer-content>
         <mat-drawer #drawer mode="over" position="end">
           <div class="drawer-content">
-            <h2>{{ 'settings.title' | translate | async }}</h2>
+            <h2>{{ 'settings.title' | translate }}</h2>
             
             <div class="setting-section">
-              <h3>{{ 'settings.language' | translate | async }}</h3>
+              <h3>{{ 'settings.language' | translate }}</h3>
               <mat-form-field appearance="fill">
-                <mat-label>{{ 'common.language' | translate | async }}</mat-label>
+                <mat-label>{{ 'common.language' | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event.value)">
-                  <mat-option value="en">{{ 'common.english' | translate | async }}</mat-option>
-                  <mat-option value="ja">{{ 'common.japanese' | translate | async }}</mat-option>
+                  <mat-option value="en">{{ 'common.english' | translate }}</mat-option>
+                  <mat-option value="ja">{{ 'common.japanese' | translate }}</mat-option>
                   <mat-option value="es">Español</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
 
             <div class="setting-section">
-              <h3>{{ 'common.help' | translate | async }}</h3>
+              <h3>{{ 'common.help' | translate }}</h3>
               <button mat-button (click)="openHelpDownloadDialog()" class="help-settings-button">
                 <mat-icon>help</mat-icon>
-                {{ 'common.help' | translate | async }} {{ 'common.download' | translate | async }}
+                {{ 'common.help' | translate }} {{ 'common.download' | translate }}
               </button>
             </div>
           </div>
@@ -159,8 +158,7 @@ import { AsyncPipe } from '@angular/common';
     MatSelectModule,
     MatFormFieldModule,
     FormsModule,
-    TranslatePipe,
-    AsyncPipe
+    TranslateModule
   ]
 })
 export class SettingsComponent {

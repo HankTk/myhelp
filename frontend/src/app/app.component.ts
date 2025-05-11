@@ -9,7 +9,8 @@ import { MatListModule } from '@angular/material/list';
 import { SettingsComponent } from './settings/settings.component';
 import { HelpIconComponent } from './components/help-icon/help-icon.component';
 import { PageContextService } from './services/page-context.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     MatIconModule,
     MatListModule,
     SettingsComponent,
-    HelpIconComponent
+    HelpIconComponent,
+    TranslateModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -37,9 +39,15 @@ export class AppComponent
 
   constructor(
     private router: Router,
-    private pageContextService: PageContextService
+    private pageContextService: PageContextService,
+    private translate: TranslateService
   ) 
   {
+    // Set default language
+    translate.setDefaultLang('en');
+    // Use browser language if available
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang?.match(/en|ja/) ? browserLang : 'en');
   }
 
   toggleSidenav() 

@@ -1,0 +1,11 @@
+<button mat-button [matMenuTriggerFor]="menu">
+  {{ (currentLang === 'en' ? 'common.english' : 'common.japanese') | translate }}
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="switchLanguage('en')">
+    {{ 'common.english' | translate }}
+  </button>
+  <button mat-menu-item (click)="switchLanguage('ja')">
+    {{ 'common.japanese' | translate }}
+  </button>
+</mat-menu> 

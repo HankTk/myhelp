@@ -7,9 +7,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { DownloadButtonComponent } from '../../download-button/download-button.component';
 import { HelpService } from '../../services/help.service';
-import { TranslatePipe } from '../../pipes/translate.pipe';
-import { AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 interface HelpFile {
   language: string;
@@ -17,6 +17,11 @@ interface HelpFile {
   version: string;
   available: boolean;
   code: string;
+}
+
+interface DownloadStatus {
+  message: string;
+  type: 'success' | 'error';
 }
 
 @Component({
@@ -31,9 +36,9 @@ interface HelpFile {
     MatDialogModule,
     MatTableModule,
     DownloadButtonComponent,
-    TranslatePipe,
-    AsyncPipe
-  ]
+    TranslateModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HelpDownloadDialogComponent implements OnInit
 {
@@ -79,7 +84,7 @@ export class HelpDownloadDialogComponent implements OnInit
     });
   }
 
-  onDownloadStatus(event: { message: string; type: 'success' | 'error' })
+  onDownloadStatus(event: DownloadStatus)
   {
     this.statusMessage = event.message;
     this.statusType = event.type;

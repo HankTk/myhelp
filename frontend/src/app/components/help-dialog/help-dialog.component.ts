@@ -1,9 +1,9 @@
-import { Component, Inject, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { TranslatePipe } from '../../pipes/translate.pipe';
-import { AsyncPipe } from '@angular/common';
 
 interface HelpDialogData {
   content: string;
@@ -13,20 +13,19 @@ interface HelpDialogData {
 @Component({
   selector: 'app-help-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, TranslatePipe, AsyncPipe],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, TranslateModule],
   templateUrl: './help-dialog.component.html',
-  styleUrls: ['./help-dialog.component.scss']
+  styleUrls: ['./help-dialog.component.css']
 })
 export class HelpDialogComponent
 {
-
-  private dialogRef = inject(MatDialogRef<HelpDialogComponent>);
-  private data = inject<HelpDialogData>(MAT_DIALOG_DATA);
-  private sanitizer = inject(DomSanitizer);
-  
   sanitizedContent: SafeHtml;
 
-  constructor() {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<HelpDialogComponent>,
+    private sanitizer: DomSanitizer
+  ) {
     this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.data.content);
   }
 
@@ -43,5 +42,4 @@ export class HelpDialogComponent
   close(): void {
     this.dialogRef.close();
   }
-
 } 

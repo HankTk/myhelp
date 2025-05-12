@@ -8,7 +8,9 @@ mat-sidenav {
 }
 
 .content {
+  /* No need to add padding here, as the main content area will have padding.
   padding: 20px;
+  */
 }
 
 .active {
@@ -24,4 +26,4 @@ mat-sidenav {
 
 .spacer {
   flex: 1 1 auto;
-} 
+}

@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HelpDownloadDialogComponent } from './help-download-dialog/help-download-dialog.component';
+import { HelpDownloadDialogComponent } from '../dialogs/help-download-dialog/help-download-dialog.component';
 import { LanguageService } from '../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -185,4 +185,4 @@ export class SettingsComponent {
       data: {}
     });
   }
-} 
+}

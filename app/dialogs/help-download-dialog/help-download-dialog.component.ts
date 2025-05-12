@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { DownloadButtonComponent } from '../../components/download-button/download-button.component';
+import { DownloadButtonComponent } from '../../download-button/download-button.component';
 import { HelpService } from '../../services/help.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
@@ -95,4 +95,4 @@ export class HelpDownloadDialogComponent implements OnInit
     this.dialogRef.close();
   }
 
-}
+} 

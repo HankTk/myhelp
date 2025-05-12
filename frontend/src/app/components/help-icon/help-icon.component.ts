@@ -2,7 +2,7 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { HelpDialogComponent } from '../help-dialog/help-dialog.component';
+import { HelpViewerDialogComponent } from '../../dialogs/help-viewer-dialog/help-viewer-dialog.component';
 import { PageContextService } from '../../services/page-context.service';
 import { HelpService } from '../../services/help.service';
 import { LanguageService } from '../../services/language.service';
@@ -33,7 +33,7 @@ export class HelpIconComponent implements OnInit
 
   private openDialogWithContent(content: string, currentPage: string): void
   {
-    this.dialog.open(HelpDialogComponent, {
+    this.dialog.open(HelpViewerDialogComponent, {
       width: '1200px',
       height: '80vh',
       data: { content, pageId: currentPage },
@@ -49,7 +49,7 @@ export class HelpIconComponent implements OnInit
   {
     const currentPage = this.pageId || this.pageContextService.getCurrentPage();
     const currentLang = this.languageService.getCurrentLanguage();
-    
+
     this.helpService.getHelpContent(currentLang, `${currentPage}.html`)
       .subscribe({
         next: (content) => this.openDialogWithContent(content, currentPage),
@@ -67,4 +67,4 @@ export class HelpIconComponent implements OnInit
       });
   }
 
-} 
+}

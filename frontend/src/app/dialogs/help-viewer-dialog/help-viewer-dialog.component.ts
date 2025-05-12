@@ -14,16 +14,16 @@ interface HelpDialogData {
   selector: 'app-help-dialog',
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule, TranslateModule],
-  templateUrl: './help-dialog.component.html',
-  styleUrls: ['./help-dialog.component.scss']
+  templateUrl: './help-viewer-dialog.component.html',
+  styleUrls: ['./help-viewer-dialog.component.scss']
 })
-export class HelpDialogComponent
+export class HelpViewerDialogComponent
 {
   sanitizedContent: SafeHtml;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<HelpDialogComponent>,
+    private dialogRef: MatDialogRef<HelpViewerDialogComponent>,
     private sanitizer: DomSanitizer
   ) {
     this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(this.data.content);
@@ -42,4 +42,4 @@ export class HelpDialogComponent
   close(): void {
     this.dialogRef.close();
   }
-} 
+}

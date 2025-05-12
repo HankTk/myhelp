@@ -6,11 +6,58 @@ A full-stack web application built with Spring Boot and Angular.
 
 ```
 myhelp/
-├── backend/           # Spring Boot backend application
-├── frontend/         # Angular frontend application
-├── help-files/       # Documentation and help files
-└── repository/       # Additional resources
+├── backend/                    # Spring Boot backend application
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/         # Java source files
+│   │   │   │   └── com/
+│   │   │   │       └── myhelp/
+│   │   │   │           ├── config/      # Configuration classes
+│   │   │   │           ├── controller/  # REST controllers
+│   │   │   │           ├── model/       # Data models
+│   │   │   │           ├── repository/  # Data access layer
+│   │   │   │           └── service/     # Business logic
+│   │   │   └── resources/    # Application properties and static resources
+│   │   └── test/            # Test files
+│   └── pom.xml              # Maven configuration
+│
+├── frontend/                  # Angular frontend application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── common/      # Shared components and utilities
+│   │   │   ├── components/  # Reusable UI components
+│   │   │   ├── dialogs/     # Modal dialog components
+│   │   │   ├── pages/       # Page components
+│   │   │   ├── pipes/       # Angular pipes
+│   │   │   └── services/    # Angular services
+│   │   ├── assets/         # Static assets
+│   │   └── environments/   # Environment configurations
+│   └── package.json        # NPM configuration
+│
+├── help-files/              # Documentation and help files
+└── repository/             # Additional resources
 ```
+
+### Backend Structure Details
+
+The backend follows a standard Spring Boot architecture with the following key components:
+
+- **Config**: Contains application configuration classes
+- **Controller**: REST API endpoints and request handling
+- **Model**: Data models and entities
+- **Repository**: Data access layer using Spring Data JPA
+- **Service**: Business logic implementation
+
+### Frontend Structure Details
+
+The frontend follows Angular best practices with a modular structure:
+
+- **Common**: Shared utilities, interfaces, and constants
+- **Components**: Reusable UI components
+- **Dialogs**: Modal dialog components for user interactions
+- **Pages**: Main page components
+- **Pipes**: Custom Angular pipes for data transformation
+- **Services**: Angular services for API communication and state management
 
 ## Prerequisites
 

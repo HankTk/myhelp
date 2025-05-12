@@ -3,7 +3,7 @@
   <mat-dialog-content>
     <div class="help-content" [innerHTML]="sanitizedContent"></div>
   </mat-dialog-content>
-  <mat-dialog-actions align="end">
+  <mat-dialog-actions align="end" style="bottom: 0; position: absolute; width: 100%;">
     <button mat-button (click)="close()">{{ 'common.close' | translate }}</button>
   </mat-dialog-actions>
 </div>

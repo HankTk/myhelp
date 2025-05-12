@@ -86,3 +86,8 @@ ng build --configuration production
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details. 
+
+## Screenshots
+![screenshot1](./documents/2025-05-12_07-36-02.png)
+![screenshot2](./documents/2025-05-12_07-36-22.png)
+![screenshot3](./documents/2025-05-12_07-36-32.png)

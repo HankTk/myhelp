@@ -1,0 +1,36 @@
+<button mat-icon-button (click)="openSettings()" class="settings-button">
+  <mat-icon>settings</mat-icon>
+</button>
+
+<div class="drawer-wrapper" [class.drawer-open]="drawer?.opened">
+  <mat-drawer-container class="drawer-container">
+    <mat-drawer-content>
+      <ng-content></ng-content>
+    </mat-drawer-content>
+    <mat-drawer #drawer mode="over" position="end">
+      <div class="drawer-content">
+        <h2>{{ 'settings.title' | translate }}</h2>
+        
+        <div class="setting-section">
+          <h3>{{ 'settings.language' | translate }}</h3>
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'common.language' | translate }}</mat-label>
+            <mat-select [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageChange($event.value)">
+              <mat-option value="en">{{ 'common.english' | translate }}</mat-option>
+              <mat-option value="ja">{{ 'common.japanese' | translate }}</mat-option>
+              <mat-option value="es">Español</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="setting-section">
+          <h3>{{ 'common.help' | translate }}</h3>
+          <button mat-button (click)="openHelpDownloadDialog()" class="help-settings-button">
+            <mat-icon>help</mat-icon>
+            {{ 'common.help' | translate }} {{ 'common.download' | translate }}
+          </button>
+        </div>
+      </div>
+    </mat-drawer>
+  </mat-drawer-container>
+</div> 

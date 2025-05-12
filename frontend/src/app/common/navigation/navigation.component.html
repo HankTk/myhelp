@@ -1,0 +1,10 @@
+<mat-nav-list>
+  @for (item of navigationItems; track item.path) {
+    <a mat-list-item 
+       [routerLink]="item.path"
+       routerLinkActive="active"
+       (click)="onNavigation(item)">
+      {{ item.translationKey | translate }}
+    </a>
+  }
+</mat-nav-list> 

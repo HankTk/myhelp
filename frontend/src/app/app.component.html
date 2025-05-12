@@ -8,18 +8,8 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav mode="side" [opened]="true">
-    <mat-nav-list>
-      <a mat-list-item routerLink="/welcome" routerLinkActive="active" (click)="onNavigation('welcome')">
-        {{ 'welcome.title' | translate }}
-      </a>
-      <a mat-list-item routerLink="/page1" routerLinkActive="active" (click)="onNavigation('page1')">
-        {{ 'page1.title' | translate }}
-      </a>
-      <a mat-list-item routerLink="/page2" routerLinkActive="active" (click)="onNavigation('page2')">
-        {{ 'page2.title' | translate }}
-      </a>
-    </mat-nav-list>
+  <mat-sidenav #sidenav mode="side" class="sidenav">
+    <app-navigation></app-navigation>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="content">

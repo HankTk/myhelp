@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PageContextService 
 {
+
   private currentPageSubject = new BehaviorSubject<string>('welcome');
   currentPage$ = this.currentPageSubject.asObservable();
 
@@ -18,4 +19,5 @@ export class PageContextService
   {
     return this.currentPageSubject.value;
   }
+
 } 

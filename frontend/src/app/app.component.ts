@@ -1,16 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, Router } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { SettingsComponent } from './settings/settings.component';
+import { SettingsComponent } from './common/settings/settings.component';
 import { HelpIconComponent } from './components/help-icon/help-icon.component';
-import { PageContextService } from './services/page-context.service';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NavigationComponent } from './common/navigation/navigation.component';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   imports: [
     CommonModule,
     RouterOutlet,
-    RouterLink,
     MatSidenavModule,
     MatToolbarModule,
     MatButtonModule,
@@ -28,20 +27,21 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     MatListModule,
     SettingsComponent,
     HelpIconComponent,
-    TranslateModule
+    TranslateModule,
+    NavigationComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppComponent 
+export class AppComponent
 {
+
   @ViewChild('sidenav') sidenav!: MatSidenav;
   title = 'My Application';
 
   constructor(
     private router: Router,
-    private pageContextService: PageContextService,
     private translate: TranslateService
-  ) 
+  )
   {
     // Set default language
     translate.setDefaultLang('en');
@@ -50,13 +50,9 @@ export class AppComponent
     translate.use(browserLang?.match(/en|ja/) ? browserLang : 'en');
   }
 
-  toggleSidenav() 
+  toggleSidenav()
   {
     this.sidenav.toggle();
   }
 
-  onNavigation(pageId: string) 
-  {
-    this.pageContextService.setCurrentPage(pageId);
-  }
 }

@@ -45,6 +45,32 @@ export class HelpIconComponent implements OnInit
     });
   }
 
+  private handleWelcomeContentSuccess(content: string): void
+  {
+    this.openDialogWithContent(content, 'welcome');
+  }
+
+  private handleWelcomeContentError(error: any, currentPage: string): void
+  {
+    console.error('Error loading welcome content:', error);
+    this.openDialogWithContent('Help content not available for this page.', currentPage);
+  }
+
+  private handleHelpContentSuccess(content: string, currentPage: string): void
+  {
+    this.openDialogWithContent(content, currentPage);
+  }
+
+  private handleHelpContentError(error: any, currentLang: string, currentPage: string): void
+  {
+    console.error('Error loading help content:', error);
+    this.helpService.getWelcomeContent(currentLang)
+      .subscribe({
+        next: (content) => this.handleWelcomeContentSuccess(content),
+        error: (error) => this.handleWelcomeContentError(error, currentPage)
+      });
+  }
+
   openHelpDialog(): void
   {
     const currentPage = this.pageId || this.pageContextService.getCurrentPage();
@@ -52,18 +78,8 @@ export class HelpIconComponent implements OnInit
 
     this.helpService.getHelpContent(currentLang, `${currentPage}.html`)
       .subscribe({
-        next: (content) => this.openDialogWithContent(content, currentPage),
-        error: (error) => {
-          console.error('Error loading help content:', error);
-          this.helpService.getWelcomeContent(currentLang)
-            .subscribe({
-              next: (content) => this.openDialogWithContent(content, 'welcome'),
-              error: (error) => {
-                console.error('Error loading welcome content:', error);
-                this.openDialogWithContent('Help content not available for this page.', currentPage);
-              }
-            });
-        }
+        next: (content) => this.handleHelpContentSuccess(content, currentPage),
+        error: (error) => this.handleHelpContentError(error, currentLang, currentPage)
       });
   }
 

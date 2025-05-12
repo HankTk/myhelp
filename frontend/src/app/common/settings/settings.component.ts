@@ -7,8 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HelpDownloadDialogComponent } from '../dialogs/help-download-dialog/help-download-dialog.component';
-import { LanguageService } from '../services/language.service';
+import { HelpDownloadDialogComponent } from '../../dialogs/help-download-dialog/help-download-dialog.component';
+import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -27,7 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule
   ]
 })
-export class SettingsComponent 
+export class SettingsComponent
 {
 
   @ViewChild('drawer') drawer!: MatDrawer;
@@ -35,24 +35,24 @@ export class SettingsComponent
   private languageService = inject(LanguageService);
   private dialog = inject(MatDialog);
 
-  constructor() 
+  constructor()
   {
     this.selectedLanguage = this.languageService.getCurrentLanguage();
   }
 
-  openSettings() 
+  openSettings()
   {
     this.drawer.toggle();
   }
 
-  onLanguageChange(lang: string) 
+  onLanguageChange(lang: string)
   {
     this.languageService.setLanguage(lang);
   }
 
-  openHelpDownloadDialog() 
+  openHelpDownloadDialog()
   {
-    this.dialog.open(HelpDownloadDialogComponent, 
+    this.dialog.open(HelpDownloadDialogComponent,
     {
       width: '600px',
       data: {}

@@ -76,6 +76,14 @@ public class HelpService {
                 return resource;
             } else {
                 logger.error("File not found: {} for language {}", fileName, language);
+                if (!language.equals("en")) {
+                    Path defaultPath = this.helpStorageLocation.resolve("en/" + fileName);
+                    Resource defaultResource = new UrlResource(defaultPath.toUri());
+                    if (defaultResource.exists()) {
+                        logger.info("Loading default language (en) file {} instead", fileName);
+                        return defaultResource;
+                    }
+                }
                 throw new HelpException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
@@ -134,25 +142,6 @@ public class HelpService {
                         throw new HelpException("Error creating zip file", e);
                     }
                 });
-        }
-    }
-
-    public String getWelcomeContent(String language) {
-        try {
-            Path welcomeFile = this.helpStorageLocation.resolve(language + "/index.html");
-            logger.info("Attempting to read welcome file from: {}", welcomeFile.toAbsolutePath());
-            
-            if (!Files.exists(welcomeFile)) {
-                logger.error("Welcome file not found for language: {} at path: {}", language, welcomeFile.toAbsolutePath());
-                throw new HelpException("Welcome file not found for language: " + language);
-            }
-            
-            String content = Files.readString(welcomeFile);
-            logger.info("Successfully loaded welcome content for language: {}", language);
-            return content;
-        } catch (IOException ex) {
-            logger.error("Failed to read welcome content for language: {}", language, ex);
-            throw new HelpException("Could not read welcome content", ex);
         }
     }
 

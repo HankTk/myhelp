@@ -45,14 +45,14 @@ export class HelpIconComponent implements OnInit
     });
   }
 
-  private handleWelcomeContentSuccess(content: string): void
+  private handleIndexContentSuccess(content: string): void
   {
-    this.openDialogWithContent(content, 'welcome');
+    this.openDialogWithContent(content, 'index');
   }
 
-  private handleWelcomeContentError(error: any, currentPage: string): void
+  private handleIndexContentError(error: any, currentPage: string): void
   {
-    console.error('Error loading welcome content:', error);
+    console.error('Error loading index content:', error);
     this.openDialogWithContent('Help content not available for this page.', currentPage);
   }
 
@@ -64,10 +64,10 @@ export class HelpIconComponent implements OnInit
   private handleHelpContentError(error: any, currentLang: string, currentPage: string): void
   {
     console.error('Error loading help content:', error);
-    this.helpService.getWelcomeContent(currentLang)
+    this.helpService.getIndexHtml(currentLang)
       .subscribe({
-        next: (content) => this.handleWelcomeContentSuccess(content),
-        error: (error) => this.handleWelcomeContentError(error, currentPage)
+        next: (content: string) => this.handleIndexContentSuccess(content),
+        error: (error: any) => this.handleIndexContentError(error, currentPage)
       });
   }
 
@@ -76,7 +76,7 @@ export class HelpIconComponent implements OnInit
     const currentPage = this.pageId || this.pageContextService.getCurrentPage();
     const currentLang = this.languageService.getCurrentLanguage();
 
-    this.helpService.getHelpContent(currentLang, `${currentPage}.html`)
+    this.helpService.getHelpContent(currentLang, currentPage)
       .subscribe({
         next: (content) => this.handleHelpContentSuccess(content, currentPage),
         error: (error) => this.handleHelpContentError(error, currentLang, currentPage)

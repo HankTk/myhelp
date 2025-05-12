@@ -9,16 +9,37 @@ export class HelpService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/help';
 
-  getWelcomeContent(language: string = 'en'): Observable<string> {
-    return this.http.get(`${this.baseUrl}/welcome?language=${language}`, { responseType: 'text' });
+  getIndexHtml(language: string = 'en'): Observable<string> {
+    return this.http.get(`${this.baseUrl}/index?language=${language}`, { responseType: 'text' })
+      .pipe(
+        catchError(error => {
+          console.error('Error loading index content:', error);
+          return of(`<div class="help-content">
+            <h2>Welcome to Help</h2>
+            <p>Welcome to the help system. Please select a specific page to view its help content.</p>
+          </div>`);
+        })
+      );
   }
 
-  getHelpContent(language: string, fileName: string): Observable<string> {
-    return this.http.get(`${this.baseUrl}/content/${language}/${fileName}`, { responseType: 'text' })
+  getHelpContent(language: string = 'en', pageId: string = 'welcome'): Observable<string> {
+    if (pageId === 'welcome') {
+      return this.http.get(`${this.baseUrl}/content/${language}/welcome.html`, { responseType: 'text' })
+        .pipe(
+          catchError(error => {
+            console.error('Error loading welcome content:', error);
+            return this.getIndexHtml(language);
+          })
+        );
+    }
+    return this.http.get(`${this.baseUrl}/content/${language}/${pageId}.html`, { responseType: 'text' })
       .pipe(
         catchError(error => {
           console.error('Error loading help content:', error);
-          return this.getWelcomeContent(language);
+          return of(`<div class="help-content">
+            <h2>Help Content Not Available</h2>
+            <p>Sorry, the help content for this page is not available at the moment.</p>
+          </div>`);
         })
       );
   }
